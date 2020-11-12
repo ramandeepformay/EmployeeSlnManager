@@ -10,6 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
+using EmployeeCrudManager;
+using EmployeeCrudManager.Storage;
+using Newtonsoft.Json;
 
 namespace EmployeeWebApi
 {
@@ -26,6 +30,12 @@ namespace EmployeeWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            // package to overide deserialization and allow to use constructor overloading
+            services.AddControllers().AddNewtonsoftJson();
+             // creating an instance of employee mgt storage which is the main class
+            var employeeStorage =new EmpStorageLists();
+            var eManager = new EmpMgtSys(employeeStorage);
+            services.AddSingleton<EmpMgtSys>(eManager);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

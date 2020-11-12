@@ -15,27 +15,24 @@ namespace EmployeeWebApi.Controllers
     [Route("[controller]")]
     public class EmployeeController : ControllerBase
     {
-       private EmpMgtSys _eManager;
-       public EmployeeController(){
-           var employeeStorage =new EmpStorageLists();
+        private EmpMgtSys _eManager;
+        public EmployeeController(EmpMgtSys eManager){
             
-            Console.WriteLine("Welcome to the Employee Manager!!\n");
-
-            // creating an instance of employee mgt storage which is the main class
-             _eManager = new EmpMgtSys(employeeStorage);
-
-            // user input class's input method called
-            // EmpUserInput.Input(eManager);
-        
-       }
+        _eManager =eManager;
+    }
+    // display of all employees
         [HttpGet]
-        public List<EmployeeInformation> Get()
+        public List<EmployeeInformation> GetEmployee()
         {
-           return _eManager.Print();
+            return _eManager.Print();
         }
-        // [HttpGet]
-        // public EmployeeInformation Search(string input){
-        //     return _eManager.Search(input);
-        // }
+    //  employee created
+        [HttpPost]
+        public string Create(EmployeeInformation employee){
+            _eManager.Create(employee.FirstName, employee.LastName, employee.Age, employee.Designation, employee.Salary);
+            return "employee created";
+            
+        }
+        
     }
 }
